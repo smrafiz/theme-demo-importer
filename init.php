@@ -70,13 +70,10 @@ $demo_config = array_merge(
 	[
 		'theme_name'       => $theme_name,
 		'theme_slug'       => $theme_slug,
+		'core_base_dir'    => CLPROPERTY_CORE_BASE_DIR,
 		'demo_content_dir' => CL_CLASSIFIED_DEMO_IMPORTER_PATH,
 		'demo_content_url' => CL_CLASSIFIED_DEMO_IMPORTER_URL,
 		'commenter_email'  => get_option( 'admin_email' ),
-		/**
-		'user_importer'    => 'UserImporter.php',
-		'user_class'       => 'RT\\CLClassified\\DemoImporter\\UserImporter',
-		*/
 	],
 	$demo_config
 );

@@ -61,6 +61,10 @@ return [
 		'rtcl-listing-single-location' => [ 'location' ],
 	],
 
+	// User importer.
+	'user_importer'        => 'demo-users/user-importer.php',
+	'user_class'           => '\Clproperty_Core_Demo_User_Import',
+
 	// RTCL Pages to remove before import.
 	'rtcl_pages_to_remove' => [
 		'Listings',
