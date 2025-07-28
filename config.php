@@ -90,7 +90,6 @@ return [
 		'elementor_experiment-container'       => 'inactive',
 		'elementor_experiment-nested-elements' => 'inactive',
 		'elementor_container_width'            => '1320',
-		'rtcl_importing_demo'                  => 'yes',
 	],
 
 	// Post-import options.
