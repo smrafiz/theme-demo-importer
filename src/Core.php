@@ -4,13 +4,13 @@
  *
  * This file contains the core functionality of the demo importer.
  *
- * @package RT\CLClassified\DemoImporter
+ * @package RT\Blusho\DemoImporter
  */
 
-namespace RT\CLClassified\DemoImporter;
+namespace RT\Blusho\DemoImporter;
 
-use RT\CLClassified\DemoImporter\Utils;
-use RT\CLClassified\DemoImporter\Handlers\RtclHandler;
+use RT\Blusho\DemoImporter\Utils;
+use RT\Blusho\DemoImporter\Handlers\WooHandler;
 
 // Do not allow directly accessing this file.
 if ( ! defined( 'ABSPATH' ) ) {
@@ -43,13 +43,6 @@ class Core {
 	private $utils;
 
 	/**
-	 * RTCL handler instance.
-	 *
-	 * @var RtclHandler|null
-	 */
-	private $rtcl = null;
-
-	/**
 	 * Class Constructor.
 	 *
 	 * @param array $config Theme configuration array.
@@ -58,11 +51,10 @@ class Core {
 		$this->config = $config;
 		$this->utils  = new Utils( $config );
 
-		if ( $this->is_feature_enabled( 'rtcl_support' ) ) {
-			$this->rtcl = new RtclHandler( $config, $this->utils );
+		if ( $this->is_feature_enabled( 'woo_support' ) ) {
+			$this->woo = new WooHandler( $config, $this->utils );
 		}
 
-		$this->load_user_importer();
 		$this->setup_hooks();
 	}
 
@@ -77,23 +69,6 @@ class Core {
 	}
 
 	/**
-	 * Load the user importer file if it exists.
-	 *
-	 * @return void
-	 */
-	private function load_user_importer(): void {
-		if ( ! $this->is_feature_enabled( 'user_import' ) ) {
-			return;
-		}
-
-		$user_importer_path = $this->config['core_base_dir'] . $this->config['user_importer'];
-
-		if ( file_exists( $user_importer_path ) ) {
-			require_once $user_importer_path;
-		}
-	}
-
-	/**
 	 * Setup WordPress hooks.
 	 *
 	 * @return void
@@ -103,7 +78,6 @@ class Core {
 		 * Filters.
 		 */
 		add_filter( 'sd/edi/importer/config', [ $this, 'import_config' ] );
-		add_filter( 'sd/edi/activated_plugin_actions', [ $this, 'plugin_actions' ] );
 
 		/**
 		 * Actions.
@@ -146,32 +120,6 @@ class Core {
 	}
 
 	/**
-	 * Run plugin activation actions after activation.
-	 *
-	 * @param array $actions Existing plugin activation actions.
-	 *
-	 * @return array
-	 */
-	public function plugin_actions( array $actions ): array {
-		$actions['classified-listing/classified-listing.php'] = [
-			'class'  => '\Rtcl\Helpers\Installer',
-			'action' => 'install',
-		];
-
-		$actions['classified-listing-pro/classified-listing-pro.php'] = [
-			'class'  => '\RtclPro\Helpers\Installer',
-			'action' => 'install',
-		];
-
-		$actions['classified-listing-store/classified-listing-store.php'] = [
-			'class'  => '\RtclStore\Helpers\Install',
-			'action' => 'install',
-		];
-
-		return $actions;
-	}
-
-	/**
 	 * Build demo data configuration.
 	 *
 	 * @return array
@@ -195,10 +143,19 @@ class Core {
 	 * @return array
 	 */
 	private function build_plugins_config(): array {
-		return array_merge(
+		$plugins = array_merge(
 			$this->build_wp_plugins(),
 			$this->build_bundled_plugins()
 		);
+
+		uasort(
+			$plugins,
+			function ( $a, $b ) {
+				return strcasecmp( $a['name'] ?? '', $b['name'] ?? '' );
+			}
+		);
+
+		return $plugins;
 	}
 
 	/**
@@ -249,11 +206,6 @@ class Core {
 	 * @return void
 	 */
 	public function before_import_actions(): void {
-		if ( $this->rtcl ) {
-			$this->rtcl->prepare_environment();
-			flush_rewrite_rules();
-		}
-
 		$this->set_import_options();
 	}
 
@@ -272,12 +224,8 @@ class Core {
 	 * @return void
 	 */
 	public function after_import_actions(): void {
-		if ( $this->is_feature_enabled( 'user_import' ) ) {
-			$this->import_users();
-		}
-
-		if ( $this->rtcl ) {
-			$this->rtcl->rebuild_environment();
+		if ( $this->woo ) {
+			$this->woo->rebuild_environment();
 		}
 
 		$this->cleanup_after_import();
@@ -291,30 +239,6 @@ class Core {
 	private function set_import_options(): void {
 		foreach ( $this->config['pre_import_options'] as $option => $value ) {
 			update_option( $option, $value );
-		}
-	}
-
-	/**
-	 * Import users and update post authors.
-	 *
-	 * @return void
-	 */
-	private function import_users(): void {
-		global $wpdb;
-
-		$current_user_id = get_current_user_id();
-
-		// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
-		$wpdb->query(
-			$wpdb->prepare(
-				"UPDATE {$wpdb->posts} SET post_author = %d",
-				$current_user_id
-			)
-		);
-
-		if ( class_exists( $this->config['user_class'] ) ) {
-			$class_name = $this->config['user_class'];
-			new $class_name();
 		}
 	}
 

@@ -4,7 +4,7 @@
  *
  * This file contains the configuration for the demo importer.
  *
- * @package @package Radiustheme\CL_Classified_Core
+ * @package @package Radiustheme\Blusho
  */
 
 // Do not allow directly accessing this file.
@@ -14,92 +14,121 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 return [
 	// Basic theme information.
-	'blog_slug'            => 'blog',
-	'demo_url'             => 'https://radiustheme.net/publicdemo/cl-classified/',
-	'menus'                => [ 'primary' => 'Main Menu' ],
+	'blog_slug'           => 'blogs',
+	'demo_url'            => 'https://www.radiustheme.com/demo/wordpress/themes/blusho/',
+	'menus'               => [ 'primary' => 'Main Menu' ],
 
 	// File paths.
-	'demo_content_zip'     => 'demo-files/demo-content.zip',
+	'demo_content_zip'    => 'demo-files/demo-content.zip',
 
 	// Demo variants.
-	'demo_variants'        => [
-		'home-1' => [
+	'demo_variants'       => [
+		'home-01' => [
 			'name'    => 'Home 1',
 			'preview' => 'screenshots/home-1.jpg',
 			'url'     => '',
 		],
+		'home-02' => [
+			'name'    => 'Home 2',
+			'preview' => 'screenshots/home-2.jpg',
+			'url'     => 'home-02/',
+		],
+		'home-03' => [
+			'name'    => 'Home 3',
+			'preview' => 'screenshots/home-3.jpg',
+			'url'     => 'home-03/',
+		],
+		'home-04' => [
+			'name'    => 'Home 4',
+			'preview' => 'screenshots/home-4.jpg',
+			'url'     => 'home-04/',
+		],
+		'home-05' => [
+			'name'    => 'Home 5',
+			'preview' => 'screenshots/home-5.jpg',
+			'url'     => 'home-05/',
+		],
+		'home-06' => [
+			'name'    => 'Home 6',
+			'preview' => 'screenshots/home-6.jpg',
+			'url'     => 'home-06/',
+		],
+		'home-07' => [
+			'name'    => 'Home 7',
+			'preview' => 'screenshots/home-7.jpg',
+			'url'     => 'home-07/',
+		],
 	],
 
 	// Additional settings.
-	'settings_json'        => [
-		'rtcl_filter_settings',
+	'settings_json'       => [
+		'_fluentform_global_form_settings',
+		'bcn_options',
+		'rtsb_extra_settings',
+		'rtsb_settings',
+		'rtsb_template_settings',
+		'rtwpvg',
+		'rtwpvs',
 	],
+	'fluent_forms_json'   => 'fluentform',
 
 	// WordPress repository plugins.
-	'wp_plugins'           => [
-		'classified-listing'          => 'Classified Listing – Classified ads & Business Directory Plugin',
-		'classified-listing-toolkits' => 'Classified Listing Toolkits',
-		'elementor'                   => 'Elementor Page Builder',
+	'wp_plugins'          => [
+		'breadcrumb-navxt'               => 'Breadcrumb NavXT',
+		'elementor'                      => 'Elementor Page Builder',
+		'fluentform'                     => 'WP Fluent Forms',
+		'shopbuilder'                    => 'ShopBuilder - Elementor WooCommerce Builder Addons',
+		'woocommerce'                    => 'WooCommerce',
+		'woo-product-variation-swatches' => 'Variation Swatches for WooCommerce',
+		'woo-product-variation-gallery'  => 'Variation Images Gallery for WooCommerce',
 	],
 
 	// Bundled/Premium plugins.
-	'bundled_plugins'      => [
-		'rt-framework' => [
+	'bundled_plugins'     => [
+		'rt-framework'                       => [
 			'name' => 'RT Framework',
 			'file' => 'plugin-bundle/rt-framework.zip',
+		],
+		'shopbuilder-pro'                    => [
+			'name' => 'ShopBuilder Pro',
+			'file' => 'plugin-bundle/shopbuilder-pro.zip',
+		],
+		'woo-product-variation-swatches-pro' => [
+			'name' => 'WooCommerce Variation Swatches Pro',
+			'file' => 'plugin-bundle/woo-product-variation-swatches-pro.zip',
+		],
+		'woo-product-variation-gallery-pro'  => [
+			'name' => 'WooCommerce Variation Images Gallery Pro',
+			'file' => 'plugin-bundle/woo-product-variation-gallery-pro.zip',
 		],
 	],
 
 	// Enable/disable import features.
-	'features'             => [
-		'rtcl_support'    => true,
-		'elementor_fixes' => true,
+	'features'            => [
+		'woo_support' => true,
 	],
 
-	// Elementor data fixes.
-	'elementor_fixes'      => [
-		'rtcl-listing-single-location' => [ 'location' ],
-	],
-
-	// User importer.
-	'user_importer'        => 'demo-users/user-importer.php',
-	'user_class'           => '\Clproperty_Core_Demo_User_Import',
-
-	// RTCL Pages to remove before import.
-	'rtcl_pages_to_remove' => [
-		'Listings',
-		'Listing Form',
-		'My Account',
-		'Checkout',
-		'Agencies',
-		'Agents',
-	],
-
-	// RTCL pages to create/update.
-	'rtcl_pages'           => [
-		'listings'     => 'All Ads',
-		'listing_form' => 'Post an Ad',
-		'myaccount'    => 'My Account',
-		'checkout'     => 'Checkout',
-		'compare'      => 'Compare',
+	// WooCommerce attribute type.
+	'attribute_type'      => [
+		'color' => [
+			'type' => 'color',
+		],
+		'size'  => [
+			'type' => 'button',
+		],
+		'brand' => [
+			'type' => 'button',
+		],
 	],
 
 	// Pre-import options.
-	'pre_import_options'   => [
+	'pre_import_options'  => [
 		'elementor_experiment-e_font_icon_svg' => 'inactive',
-		'elementor_experiment-container'       => 'inactive',
-		'elementor_experiment-nested-elements' => 'inactive',
-		'elementor_container_width'            => '1320',
 	],
 
 	// Post-import options.
-	'post_import_options'  => [
-		'elementor_allow_unfiltered_files' => true,
-	],
-
-	// Custom RTCL import files.
-	'rtcl_custom_files'    => [
-		'rtcl_options' => 'demo-files/rtcl-options.json',
-		'rtcl_forms'   => 'demo-files/rtcl-form.json',
+	'post_import_options' => [
+		'elementor_unfiltered_files_upload' => true,
+		'posts_per_page'                    => 8,
 	],
 ];

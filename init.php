@@ -4,7 +4,7 @@
  *
  * This file initializes the easy demo importer.
  *
- * @package RT\CLClassified\DemoImporter
+ * @package RT\Blusho\DemoImporter
  */
 
 // Do not allow directly accessing this file.
@@ -26,7 +26,7 @@ if ( ! defined( 'CL_CLASSIFIED_DEMO_IMPORTER_URL' ) ) {
 spl_autoload_register(
 	function ( $class ) {
 		$namespaces = [
-			'RT\\CLClassified\\DemoImporter\\' => __DIR__ . '/src/',
+			'RT\\Blusho\\DemoImporter\\' => __DIR__ . '/src/',
 		];
 
 		foreach ( $namespaces as $namespace => $base_dir ) {
@@ -57,7 +57,7 @@ if ( ! file_exists( $config_file ) ) {
 $demo_config = require $config_file;
 
 if ( ! is_array( $demo_config ) ) {
-	wp_die( 'Invalid demo configuration. Configuration must return an array.' );
+	wp_die( 'Invalid demo configuration. Please check the configuration file.' );
 }
 
 // Get current theme information.
@@ -70,7 +70,7 @@ $demo_config = array_merge(
 	[
 		'theme_name'       => $theme_name,
 		'theme_slug'       => $theme_slug,
-		'core_base_dir'    => CLPROPERTY_CORE_BASE_DIR,
+		'core_base_dir'    => BLUSHO_CORE_BASE_DIR,
 		'demo_content_dir' => CL_CLASSIFIED_DEMO_IMPORTER_PATH,
 		'demo_content_url' => CL_CLASSIFIED_DEMO_IMPORTER_URL,
 		'commenter_email'  => get_option( 'admin_email' ),
@@ -80,7 +80,7 @@ $demo_config = array_merge(
 
 // Initialize the demo importer.
 try {
-	new RT\CLClassified\DemoImporter\Core( $demo_config );
+	new RT\Blusho\DemoImporter\Core( $demo_config );
 } catch ( Exception $e ) {
 	wp_die( 'Failed to initialize Demo Importer: ' . esc_html( $e->getMessage() ) );
 }

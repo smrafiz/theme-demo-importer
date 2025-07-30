@@ -4,10 +4,10 @@
  *
  * This file contains utility functions.
  *
- * @package RT\CLClassified\DemoImporter
+ * @package RT\Blusho\DemoImporter
  */
 
-namespace RT\CLClassified\DemoImporter;
+namespace RT\Blusho\DemoImporter;
 
 // Do not allow directly accessing this file.
 if ( ! defined( 'ABSPATH' ) ) {
