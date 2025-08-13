@@ -43,6 +43,13 @@ class Core {
 	private $utils;
 
 	/**
+	 * WooCommerce handler instance.
+	 *
+	 * @var WooHandler
+	 */
+	private $woo;
+
+	/**
 	 * Class Constructor.
 	 *
 	 * @param array $config Theme configuration array.
